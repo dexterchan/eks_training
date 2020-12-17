@@ -8,4 +8,4 @@ spec:
       app: green-pod
   securityGroups:
     groupIds:
-      - sg-0cbda0bf409d2f217
+      - sg-01948d9f96fa3d1f9

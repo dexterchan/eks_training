@@ -22,3 +22,16 @@ curl -s -O https://www.eksworkshop.com/beginner/115_sg-per-pod/deployments.files
 kubectl -n sg-per-pod apply -f green-pod.yaml
 
 kubectl -n sg-per-pod rollout status deployment green-pod
+
+export GREEN_POD_NAME=$(kubectl -n sg-per-pod get pods -l app=green-pod -o jsonpath='{.items[].metadata.name}')
+kubectl -n sg-per-pod  logs -f ${GREEN_POD_NAME}
+
+kubectl -n sg-per-pod apply -f red-pod.yaml
+kubectl -n sg-per-pod rollout status deployment red-pod
+
+export RED_POD_MAME=$(kubectl -n sg-per-pod get pods -l app=red-pod -o jsonpath='{.items[].metadata.name}')
+kubectl -n sg-per-pod  logs -f ${RED_POD_MAME}
+
+kubectl -n sg-per-pod  describe pod ${RED_POD_MAME} | head -11
+
+

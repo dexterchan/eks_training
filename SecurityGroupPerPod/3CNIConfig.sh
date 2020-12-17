@@ -17,6 +17,15 @@ kubectl -n kube-system rollout status ds aws-node
 #Once this setting is set to true, for each node in the cluster the plugin adds a label
 #with the value vpc.amazonaws.com/has-trunk-attached=true.
 popd
+
+export VPC_ID=$(aws eks describe-cluster \
+    --name eksworkshop-eksctl \
+    --query "cluster.resourcesVpcConfig.vpcId" \
+    --output text)
+export POD_SG=$(aws ec2 describe-security-groups \
+    --filters Name=group-name,Values=POD_SG Name=vpc-id,Values=${VPC_ID} \
+    --query "SecurityGroups[0].GroupId" --output text)
+    
 cat << EoF > sg-per-pod/sg-policy.yaml
 apiVersion: vpcresources.k8s.aws/v1beta1
 kind: SecurityGroupPolicy

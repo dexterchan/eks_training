@@ -1,5 +1,10 @@
 #!/bin/sh
 
+
+export VPC_ID=$(aws eks describe-cluster \
+    --name eksworkshop-eksctl \
+    --query "cluster.resourcesVpcConfig.vpcId" \
+    --output text)
 #We first need to create a DB subnet groups. We will use the same subnets as our EKS cluster.
 export PUBLIC_SUBNETS_ID=$(aws ec2 describe-subnets \
     --filters "Name=vpc-id,Values=$VPC_ID" "Name=tag:Name,Values=eksctl-eksworkshop-eksctl-cluster/SubnetPublic*" \
